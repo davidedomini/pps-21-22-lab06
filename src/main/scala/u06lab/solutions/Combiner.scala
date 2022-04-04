@@ -16,7 +16,11 @@ object FunctionsImpl extends Functions:
     case f +: t => f + concat(t)
     case _ => ""
 
-  override def max(a: List[Int]): Int = ???
+  override def max(a: List[Int]): Int = a match
+    case h :: t if h > max(t) => h
+    case h :: t => max(t)
+    case _ => Int.MinValue
+
 
 /*
  * 2) To apply DRY principle at the best,
