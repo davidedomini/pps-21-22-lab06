@@ -12,7 +12,9 @@ object FunctionsImpl extends Functions:
     case h :: t => h + sum(t)
     case _ => 0.0
 
-  override def concat(a: Seq[String]): String = ???
+  override def concat(a: Seq[String]): String = a match
+    case f +: t => f + concat(t)
+    case _ => ""
 
   override def max(a: List[Int]): Int = ???
 
