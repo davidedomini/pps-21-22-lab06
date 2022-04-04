@@ -26,7 +26,14 @@ object ConnectThree extends App:
 
   import Player.*
 
-  def find(board: Board, x: Int, y: Int): Option[Player] = ???
+  def find(board: Board, x: Int, y: Int): Option[Player] =
+    var res: Option[Player] = None;
+    for
+      e <- board
+    do
+      if (e.x == x && e.y == y) then
+        res = Some(e.player)
+    res
 
   def firstAvailableRow(board: Board, x: Int): Option[Int] = ???
 
