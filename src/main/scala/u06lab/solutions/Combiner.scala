@@ -15,8 +15,8 @@ object FunctionsImpl extends Functions:
 
   override def max(a: List[Int]): Int = combine(a)
 
-    def combine[A](a: Iterable[A])(using combiner: Combiner[A]): A =
-      a.foldLeft(combiner.unit)(combiner.combine)
+  def combine[A](a: Iterable[A])(using combiner: Combiner[A]): A =
+    a.foldLeft(combiner.unit)(combiner.combine)
 
 /*
  * 2) To apply DRY principle at the best,
@@ -34,8 +34,6 @@ object FunctionsImpl extends Functions:
 trait Combiner[A]:
   def unit: A
   def combine(a: A, b: A): A
-
-
 
 //Siccome non sono proprio canonici per i tipi Double, ecc... sarebbe meglio avere i combiner singoli con i nomi e poi passarli
 //con using
