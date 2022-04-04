@@ -35,7 +35,17 @@ object ConnectThree extends App:
         res = Some(e.player)
     res
 
-  def firstAvailableRow(board: Board, x: Int): Option[Int] = ???
+  def firstAvailableRow(board: Board, x: Int): Option[Int] =
+    if board.isEmpty then
+      Some(x)
+    else
+      var fr = x;
+      for
+        e <- board
+        if (e.x == x)
+      do
+        fr = fr + 1;
+      if fr < 4 then Some(fr) else None
 
   def placeAnyDisk(board: Board, player: Player): Seq[Board] = ???
 
