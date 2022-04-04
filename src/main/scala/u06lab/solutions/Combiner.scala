@@ -8,19 +8,15 @@ trait Functions:
   def max(a: List[Int]): Int // gives Int.MinValue if a is empty
 
 object FunctionsImpl extends Functions:
-  override def sum(a: List[Double]): Double = a match
-    case h :: t => h + sum(t)
-    case _ => 0.0
+  import GivenCombiners.given
+  override def sum(a: List[Double]): Double = combine(a)
 
-  override def concat(a: Seq[String]): String = a match
-    case f +: t => f + concat(t)
-    case _ => ""
+  override def concat(a: Seq[String]): String = combine(a)
 
-  override def max(a: List[Int]): Int = a match
-    case h :: t if h > max(t) => h
-    case h :: t => max(t)
-    case _ => Int.MinValue
+  override def max(a: List[Int]): Int = combine(a)
 
+    def combine[A](a: Iterable[A])(using combiner: Combiner[A]): A =
+      a.foldLeft(combiner.unit)(combiner.combine)
 
 /*
  * 2) To apply DRY principle at the best,
@@ -38,6 +34,24 @@ object FunctionsImpl extends Functions:
 trait Combiner[A]:
   def unit: A
   def combine(a: A, b: A): A
+
+
+
+//Siccome non sono proprio canonici per i tipi Double, ecc... sarebbe meglio avere i combiner singoli con i nomi e poi passarli
+//con using
+
+object GivenCombiners:
+   given Combiner[Double] with
+     override def unit: Double = 0.0
+     override def combine(a: Double, b: Double): Double = a + b
+
+   given Combiner[String] with
+     override def unit: String = ""
+     override def combine(a: String, b: String): String = a + b
+
+   given Combiner[Int] with
+     override def unit: Int = Int.MinValue
+     override def combine(a: Int, b: Int): Int = if a > b then a else b
 
 @main def checkFunctions(): Unit =
   val f: Functions = FunctionsImpl
