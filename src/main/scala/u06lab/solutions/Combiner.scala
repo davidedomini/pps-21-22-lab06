@@ -8,8 +8,12 @@ trait Functions:
   def max(a: List[Int]): Int // gives Int.MinValue if a is empty
 
 object FunctionsImpl extends Functions:
-  override def sum(a: List[Double]): Double = ???
+  override def sum(a: List[Double]): Double = a match
+    case h :: t => h + sum(t)
+    case _ => 0.0
+
   override def concat(a: Seq[String]): String = ???
+
   override def max(a: List[Int]): Int = ???
 
 /*
