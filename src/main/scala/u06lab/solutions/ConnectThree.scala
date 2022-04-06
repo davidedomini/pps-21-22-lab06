@@ -36,12 +36,7 @@ object ConnectThree extends App:
     res
 
   def firstAvailableRow(board: Board, x: Int): Option[Int] =
-    var fr = 0;
-    for
-      e <- board
-      if (e.x == x)
-    do
-      fr = fr + 1;
+    var fr = board.foldLeft(0)((acc, e) => if(e.x == x) then acc + 1 else acc)
     if fr < 4 then Some(fr) else None
 
   def placeAnyDisk(board: Board, player: Player): Seq[Board] =
