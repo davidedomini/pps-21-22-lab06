@@ -36,18 +36,23 @@ object ConnectThree extends App:
     res
 
   def firstAvailableRow(board: Board, x: Int): Option[Int] =
-    if board.isEmpty then
-      Some(x)
-    else
-      var fr = x;
-      for
-        e <- board
-        if (e.x == x)
-      do
-        fr = fr + 1;
-      if fr < 4 then Some(fr) else None
+    var fr = 0;
+    for
+      e <- board
+      if (e.x == x)
+    do
+      fr = fr + 1;
+    if fr < 4 then Some(fr) else None
 
-  def placeAnyDisk(board: Board, player: Player): Seq[Board] = ???
+  def placeAnyDisk(board: Board, player: Player): Seq[Board] =
+    var boards = Seq.empty[Board]
+    for
+      col <- 0 to 3
+    do
+      val fr = firstAvailableRow(board, col)
+      if !fr.isEmpty then
+        boards = boards :+  (board :+ Disk(col, fr.get, player))
+    boards
 
   def computeAnyGame(player: Player, moves: Int): LazyList[Game] = ???
 
@@ -75,6 +80,7 @@ object ConnectThree extends App:
   println(firstAvailableRow(List(Disk(0, 0, X), Disk(0, 1, X)), 0)) // Some(2)
   println(firstAvailableRow(List(Disk(0, 0, X), Disk(0, 1, X), Disk(0, 2, X)), 0)) // Some(3)
   println(firstAvailableRow(List(Disk(0, 0, X), Disk(0, 1, X), Disk(0, 2, X), Disk(0, 3, X)), 0)) // None
+
   // Exercise 2: implement placeAnyDisk such that..
   printBoards(placeAnyDisk(List(), X))
   // .... .... .... ....
@@ -86,6 +92,7 @@ object ConnectThree extends App:
   // .... .... .... ....
   // ...X .... .... ....
   // ...O ..XO .X.O X..O
+  
   println("EX 3: ")
 // Exercise 3 (ADVANCED!): implement computeAnyGame such that..
   computeAnyGame(O, 4).foreach { g =>

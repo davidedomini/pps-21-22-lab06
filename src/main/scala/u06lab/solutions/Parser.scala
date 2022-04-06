@@ -41,7 +41,7 @@ class NotTwoConsecutiveParser(chars: Set[Char]) extends BasicParser(chars) with 
 
 object StringOperators:
   extension(s: String)
-    def charParser(): BasicParser = new BasicParser(s.toCharArray.toSet)
+    def charParser: BasicParser = new BasicParser(s.toCharArray.toSet)
 
 @main def checkParsers(): Unit =
   def parser = new BasicParser(Set('a', 'b', 'c'))
@@ -69,7 +69,7 @@ object StringOperators:
 
   import StringOperators.*
 
-  def sparser: Parser[Char] = "abc".charParser()
+  def sparser: Parser[Char] = "abc".charParser
   println(sparser.parseAll("aabc".toList)) // true
   println(sparser.parseAll("aabcdc".toList)) // false
   println(sparser.parseAll("".toList)) // true
