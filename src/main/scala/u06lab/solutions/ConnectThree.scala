@@ -37,7 +37,7 @@ object ConnectThree extends App:
 
   def firstAvailableRow(board: Board, x: Int): Option[Int] =
     var fr = board.foldLeft(0)((acc, e) => if(e.x == x) then acc + 1 else acc)
-    if fr < 4 then Some(fr) else None
+    if fr <= bound then Some(fr) else None
 
   def placeAnyDisk(board: Board, player: Player): Seq[Board] =
     var boards = Seq.empty[Board]
