@@ -44,7 +44,7 @@ object ConnectThree extends App:
     do
       val fr = firstAvailableRow(board, col)
       if !fr.isEmpty then
-        boards = boards :+  (board :+ Disk(col, fr.get, player))
+        boards = boards :+ (board :+ Disk(col, fr.get, player))
     boards
 
   def computeAnyGame(player: Player, moves: Int): LazyList[Game] = moves match
