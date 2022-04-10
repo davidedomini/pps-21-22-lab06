@@ -33,17 +33,9 @@ object ConnectThree extends App:
       .map(_.player)
       .headOption
 
-//    var res: Option[Player] = None;
-//    for
-//      e <- board
-//    do
-//      if (e.x == x && e.y == y) then
-//        res = Some(e.player)
-//    res
-
   def firstAvailableRow(board: Board, x: Int): Option[Int] =
     var fr = board.foldLeft(0)((acc, e) => if(e.x == x) then acc + 1 else acc)
-    if fr <= bound then Some(fr) else None
+    Option.when(fr <= bound)(fr)
 
   def placeAnyDisk(board: Board, player: Player): Seq[Board] =
     var boards = Seq.empty[Board]
