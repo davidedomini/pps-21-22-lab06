@@ -1,6 +1,7 @@
 package u06lab.solutions
 
 import java.util.OptionalInt
+import scala.collection.LazyZip2
 
 object ConnectThree extends App:
   val bound = 3
@@ -27,13 +28,18 @@ object ConnectThree extends App:
   import Player.*
 
   def find(board: Board, x: Int, y: Int): Option[Player] =
-    var res: Option[Player] = None;
-    for
-      e <- board
-    do
-      if (e.x == x && e.y == y) then
-        res = Some(e.player)
-    res
+    board
+      .filter((d) => d.x == x && d.y == y)
+      .map(_.player)
+      .headOption
+
+//    var res: Option[Player] = None;
+//    for
+//      e <- board
+//    do
+//      if (e.x == x && e.y == y) then
+//        res = Some(e.player)
+//    res
 
   def firstAvailableRow(board: Board, x: Int): Option[Int] =
     var fr = board.foldLeft(0)((acc, e) => if(e.x == x) then acc + 1 else acc)
@@ -42,14 +48,21 @@ object ConnectThree extends App:
   def placeAnyDisk(board: Board, player: Player): Seq[Board] =
     var boards = Seq.empty[Board]
     for
-      col <- 0 to 3
+      col <- 0 to bound
     do
       val fr = firstAvailableRow(board, col)
       if !fr.isEmpty then
         boards = boards :+  (board :+ Disk(col, fr.get, player))
     boards
 
-  def computeAnyGame(player: Player, moves: Int): LazyList[Game] = ???
+  def computeAnyGame(player: Player, moves: Int): LazyList[Game] = moves match
+    case 0 => LazyList(Seq(Seq()))
+    case _ =>
+      for
+        game <- computeAnyGame(if player == X then O else X, moves - 1)
+        board <- placeAnyDisk(game.head, player)
+      yield
+        board +: game
 
   def printBoards(game: Seq[Board]): Unit =
     for
@@ -87,7 +100,8 @@ object ConnectThree extends App:
   // .... .... .... ....
   // ...X .... .... ....
   // ...O ..XO .X.O X..O
-  
+
+
   println("EX 3: ")
 // Exercise 3 (ADVANCED!): implement computeAnyGame such that..
   computeAnyGame(O, 4).foreach { g =>
